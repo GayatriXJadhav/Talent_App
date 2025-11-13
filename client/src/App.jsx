@@ -1,8 +1,7 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
 import './App.css'
-import SkillFilter from './components/skillFilter'
+import SkillFilter from './components/SkillFilter'
 import TalentForm from './components/TalentAddition/TalentForm'
 import TalentList from './components/TalentList'
 import TalentFormModal from './components/TalentAddition/TalentFormModal'
