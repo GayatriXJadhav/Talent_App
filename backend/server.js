@@ -15,12 +15,11 @@ app.use(express.json());
 //routes
 app.use("/api",talentroutes);
 if (process.env.NODE_ENV === "production") {
+  const __dirname1 = path.resolve();
+  app.use(express.static(path.join(__dirname1, "/client/dist")));
 
-
-  app.use(express.static(path.join(__dirname, "../client/dist"))); 
-
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../client/dist", "index.html"));
+  app.use((req, res, next) => {
+    res.sendFile(path.resolve(__dirname1, "client", "dist", "index.html"));
   });
 }
 mongoose.connect(process.env.MONGO_URI)

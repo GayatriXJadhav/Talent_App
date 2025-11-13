@@ -2,8 +2,11 @@ import { createAsyncThunk} from "@reduxjs/toolkit";
 import axios from 'axios';
 
 
-const API_URL = 'http://localhost:5000/api/talents';
-
+const API_BASE_URL =
+  import.meta.env.MODE === "production"
+    ? window.location.origin // automatically uses the deployed site’s domain
+    : "http://localhost:5000";
+const API_URL=`${API_BASE_URL}/api/talents`;
 export const fetchTalents=createAsyncThunk(
     'talents/fetchAll',
     async(_,{rejectWithValue})=>{
