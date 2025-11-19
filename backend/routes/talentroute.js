@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.get('/talents', async (req, res) => {
     try {
+      
         const { skill } = req.query;
         let talents;
         if (skill) {

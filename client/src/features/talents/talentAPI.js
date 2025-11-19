@@ -7,6 +7,7 @@ const API_BASE_URL =
     ? import.meta.env.VITE_API_BASE_URL
     : "http://localhost:5000";
 const API_URL=`${API_BASE_URL}/api/talents`;
+
 export const fetchTalents=createAsyncThunk(
     'talents/fetchAll',
     async(_,{rejectWithValue})=>{
@@ -24,11 +25,12 @@ export const addTalent=createAsyncThunk(
     'talents/addTalent',
     async(newTalent,{rejectWithValue})=>{
         try{
+          
             const response=await axios.post(API_URL,newTalent);
             return response.data;
         }
         catch(error){
-            return rejectWithValue(error.response?.data || 'Failed to add talents');
+            return rejectWithValue(error.response?.data?.message || 'Failed to add talents');
         }
     }
 );

@@ -37,7 +37,10 @@ const talentSlice=createSlice({
         })
         .addCase(addTalent.fulfilled,(state,action)=>{
             state.loading=false;
-            state.data.push(action.payload);
+            if(action.payload?._id){
+
+                state.data.push(action.payload);
+            }
 
         })
         .addCase(addTalent.rejected, (state,action)=>{
