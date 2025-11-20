@@ -1,4 +1,4 @@
-const { deleteTalent } = require("../../client/src/features/talents/talentAPI.js");
+
 const Talent=require("../models/Talent.js");
 const mongoose=require("mongoose");
 
