@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import { addTalent, fetchTalents, filterTalentBySkill } from './talentAPI';
+import { addTalent, deleteTalent, fetchTalents, filterTalentBySkill,updateTalent } from './talentAPI';
 
 const talentSlice=createSlice({
     name:'talents',
@@ -61,8 +61,40 @@ const talentSlice=createSlice({
             state.loading=false;
             state.error=action.payload;
         })
+                .addCase(updateTalent.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
+        .addCase(updateTalent.fulfilled, (state, action) => {
+            state.loading = false;
+            // Find and update the talent in the data array
+            const updatedTalent = action.payload;
+            const index = state.data.findIndex(talent => talent._id === updatedTalent._id);
+            if (index !== -1) {
+                state.data[index] = updatedTalent;
+            }
+        })
+        .addCase(updateTalent.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        })
+        
+        // Delete talent
+        .addCase(deleteTalent.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
+        .addCase(deleteTalent.fulfilled, (state, action) => {
+            state.loading = false;
+            // Remove the deleted talent from the data array
+            state.data = state.data.filter(talent => talent._id !== action.payload);
+        })
+        .addCase(deleteTalent.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        });
     },
 });
-export { fetchTalents, addTalent, filterTalentBySkill };
+export { fetchTalents, addTalent, filterTalentBySkill,updateTalent,deleteTalent };
 export const {clearError}=talentSlice.actions;
 export default talentSlice.reducer;

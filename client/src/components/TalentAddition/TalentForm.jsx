@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addTalent, clearError } from "../../features/talents/talentSlice";
+import { addTalent, clearError, updateTalent } from "../../features/talents/talentSlice";
 
 const TalentForm = ({onClose ,talent=null  }) => {
   const dispatch = useDispatch();
-  const {error}=useSelector((state)=>state.talents);
+  const {error,loading}=useSelector((state)=>state.talents);
  
   const isEditMode=Boolean(talent);
   const [name, setName] = useState("");
@@ -35,12 +35,19 @@ const TalentForm = ({onClose ,talent=null  }) => {
       experience
     }
     if(isEditMode){
-      dispatch(updateTalent({id:talent._id || talent.id,...talentData}))
+      dispatch(updateTalent({
+        talentId: talent._id || talent.id, 
+        updateData: talentData 
+      }
+      ))
       .unwrap()
       .then(()=>{
         onClose();
       })
-      .catch(()=>{})
+      .catch(()=>{
+        console.error("Update failed",error);
+         alert(`Update failed: ${error || 'Please check the console for details'}`);  
+      })
     }
     else{
 
@@ -58,7 +65,7 @@ const TalentForm = ({onClose ,talent=null  }) => {
         onClose();
       })
      .catch(()=>{
-  
+        console.error("Add failed",error)
      })
     }
   };
@@ -70,201 +77,6 @@ const TalentForm = ({onClose ,talent=null  }) => {
       }
     }
   return (
-    
-     
-      
-      //   <form
-      //     onSubmit={handleSubmit}
-      //     className="bg-white shadow-lg rounded-xl p-6 mt-4 w-full space-y-4 border border-gray-200 animate-fadeIn"
-      //   >
-       
-      //    {error && (
-      //   <p className="text-red-500 text-center font-medium">
-      //     {error}
-      //   </p>
-      // )}
-      //   {/* Input field for Name Email skills Experience */}
-          
-      //     <input
-      //       placeholder="Name"
-      //       value={name}
-            
-      //       onChange={(e) =>{
-      //         clearErrorOnce();
-      //         setName(e.target.value);
-
-      //       }}
-      //       className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-      //       required
-      //     />
-
-      //     <input
-      //       placeholder="Email"
-      //       value={email}
-      //       onChange={(e) =>{ 
-      //         clearErrorOnce();
-      //         setEmail(e.target.value)}}
-      //       className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-      //       required
-      //     />
-
-      //     <input
-      //       placeholder="Skills (comma separated)"
-      //       value={skills}
-      //       onChange={(e) => {
-      //         clearErrorOnce();
-      //         setSkills(e.target.value)}}
-      //       className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-      //       required
-      //     />
-
-      //     <input
-      //       placeholder="Experience"
-      //       value={experience}
-      //       onChange={(e) =>{ 
-      //         clearErrorOnce();
-      //         setExperience(e.target.value)}}
-      //       className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-      //       required
-      //     />
-
-      //      <div className=" flex flex-row justify-center"> 
-
-      //     <button
-      //       type="submit"
-      //       className="m-3 w-full bg-blue-600 text-white py-2 rounded-lg text-xl hover:bg-blue-700 transition-all duration-200"
-          
-      //     >
-      //     {isEditMode ? "Update Talent": " Add Talent"}
-      //     </button>
-      //          <button
-      //               onClick={onClose}
-      //               className=" m-3 py-2 border-2 rounded-lg px-2 text-gray-500 hover:text-gray-700 text-xl  "
-      //             >
-                   
-      //              Cancel
-      //             </button>
-      //      </div>
-      //   </form>
-   
- 
-//       <form
-//   onSubmit={handleSubmit}
-//   className="bg-white shadow-xl rounded-2xl p-8 w-full  mx-auto border border-gray-100 animate-fadeIn"
-// >
-//   {/* Header */}
-//   <div className="text-center mb-8">
-//     <h2 className="text-2xl font-bold text-gray-800">
-//       {isEditMode ? "Update Talent" : "Add New Talent"}
-//     </h2>
-//     <p className="text-gray-600 mt-2">
-//       {isEditMode ? "Update talent information" : "Add a new talent to your portfolio"}
-//     </p>
-//   </div>
-
-//   {/* Error Message */}
-//   {error && (
-//     <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-//       <p className="text-red-700 text-center font-medium flex items-center justify-center gap-2">
-//         <span>⚠️</span>
-//         {error}
-//       </p>
-//     </div>
-//   )}
-
-//   {/* Form Fields */}
-//   <div className="space-y-6">
-//     {/* Name Field */}
-//     <div>
-//       <label className="block text-sm font-medium text-gray-700 mb-2">
-//         Full Name *
-//       </label>
-//       <input
-//         placeholder="Enter full name"
-//         value={name}
-//         onChange={(e) => {
-//           clearErrorOnce();
-//           setName(e.target.value);
-//         }}
-//         className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-//         required
-//       />
-//     </div>
-
-//     {/* Email Field */}
-//     <div>
-//       <label className="block text-sm font-medium text-gray-700 mb-2">
-//         Email Address *
-//       </label>
-//       <input
-//         type="email"
-//         placeholder="Enter email address"
-//         value={email}
-//         onChange={(e) => { 
-//           clearErrorOnce();
-//           setEmail(e.target.value);
-//         }}
-//         className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-//         required
-//       />
-//     </div>
-
-//     {/* Skills Field */}
-//     <div>
-//       <label className="block text-sm font-medium text-gray-700 mb-2">
-//         Skills *
-//       </label>
-//       <input
-//         placeholder="React, Node.js, Python, etc."
-//         value={skills}
-//         onChange={(e) => {
-//           clearErrorOnce();
-//           setSkills(e.target.value);
-//         }}
-//         className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-//         required
-//       />
-//       <p className="text-xs text-gray-500 mt-1">Separate skills with commas</p>
-//     </div>
-
-//     {/* Experience Field */}
-//     <div>
-//       <label className="block text-sm font-medium text-gray-700 mb-2">
-//         Experience (Years) *
-//       </label>
-//       <input
-//         type="number"
-//         min="0"
-//         max="50"
-//         placeholder="Enter years of experience"
-//         value={experience}
-//         onChange={(e) => { 
-//           clearErrorOnce();
-//           setExperience(e.target.value);
-//         }}
-//         className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-//         required
-//       />
-//     </div>
-//   </div>
-
-//   {/* Action Buttons */}
-//   <div className="flex gap-3 mt-8">
-//     <button
-//       type="button"
-//       onClick={onClose}
-//       className="flex-1 py-3 px-4 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all duration-200 font-medium"
-//     >
-//       Cancel
-//     </button>
-//     <button
-//       type="submit"
-//       className="flex-1 py-3 px-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 font-medium shadow-md hover:shadow-lg"
-//     >
-//       {isEditMode ? "Update Talent" : "Add Talent"}
-//     </button>
-//   </div>
-// </form>
 <form
   onSubmit={handleSubmit}
   className="bg-white shadow-2xl rounded-3xl p-8 w-full  mx-auto border border-indigo-50 animate-fadeIn"
@@ -393,7 +205,7 @@ const TalentForm = ({onClose ,talent=null  }) => {
       type="submit"
       className="flex-1 py-4 px-6 bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-600 hover:via-blue-700 hover:to-indigo-700 transform hover:scale-105 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl"
     >
-      {isEditMode ? "Update Talent" : "Add Talent"}
+        {loading ? "Saving..." : (isEditMode ? "Update Talent" : "Add Talent")}
     </button>
   </div>
 </form>

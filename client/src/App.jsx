@@ -2,11 +2,12 @@ import { useState } from 'react'
 
 import './App.css'
 import SkillFilter from './components/SkillFilter'
-import TalentForm from './components/TalentAddition/TalentForm'
+
 import TalentList from './components/TalentList'
 import TalentFormModal from './components/TalentAddition/TalentFormModal'
 import DashBoard from './components/DashBoard'
 import Navbar from './components/Navbar'
+import Footer from './components/Footer'
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,25 +15,24 @@ function App() {
   return (
     <>
     <div className='mt-0 '>
-
       <Navbar onClick={()=>setIsModalOpen(true)}/>
       <DashBoard/>
-      
-
-       <SkillFilter/>
-
-        
-
+      <SkillFilter/>
       <TalentFormModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}/>
-       
-        {/* <TalentForm onClose={() => setIsModalOpen(false)} />
-      </TalentFormModal> */}
       <TalentList/>
-       
+       <Footer/>
      
     </div>
     </>
   )
 }
-
 export default App
+       
+       
+
+      
+
+
+
+        
+

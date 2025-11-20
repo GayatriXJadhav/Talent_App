@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { filterTalentBySkill } from "../features/talents/talentSlice";
 
 const SkillFilter = () => {
   const dispatch = useDispatch();
+  const {data}=useSelector((state)=>state.talents);
   const [query,setQuery]=useState("");
 
    useEffect(() => {
@@ -48,7 +49,7 @@ const SkillFilter = () => {
     </div>
     
     <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg px-6 py-3 text-center min-w-[140px] shadow-sm">
-      <div className="text-2xl font-bold text-blue-700">247</div>
+      <div className="text-2xl font-bold text-blue-700">{data.length}</div>
       <div className="text-sm text-blue-600 font-medium">Total Talents</div>
     </div>
   </div>

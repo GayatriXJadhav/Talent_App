@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchTalents } from "../features/talents/talentSlice";
+import { deleteTalent, fetchTalents } from "../features/talents/talentSlice";
 import TalentFormModal from "./TalentAddition/TalentFormModal";
 
 const TalentList = () => {
@@ -21,12 +21,22 @@ const handleCloseEdit=()=>{
   setEditingTalent(null);
   setIsModalOpen(false);
 }
+  const handleDelete = async (talentId) => {
+    if (window.confirm('Are you sure you want to delete this talent?')) {
+      try {
+        await dispatch(deleteTalent(talentId)).unwrap();
+        // Talent will be automatically removed from Redux store
+      } catch (error) {
+        alert(`Failed to delete talent: ${error}`);
+      }
+    }
+  };
 
   if (loading) return <p>Loading...</p>;
   // if (error) return <p style={{ color: "red" }}>{error.message || error}</p>;
 
   return (
-  <div className="  border-0 m-2 rounded-lg  bg-gray-100">
+  <div className="  border-0 m-2 rounded-lg p-2 bg-gray-100">
    
     <div className="bg-gray-800 rounded-t-lg p-6 mb-4">
     <h2 className="font-bold text-4xl text-white text-center">
@@ -44,7 +54,7 @@ const handleCloseEdit=()=>{
    />
        
     
-       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
   {data.map((talent) => {
     const createdDate = talent.createdAt
       ? new Date(talent.createdAt).toLocaleDateString("en-GB", {
